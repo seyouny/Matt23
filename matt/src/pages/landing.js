@@ -5,7 +5,12 @@ import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+// import API from '../controllers/controller'
 import './style.css'
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,41 +35,128 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["1","2","3"];
+  return ["1", "2", "3"];
 }
+
+
+
 // 'Upload any cute pictures for memories', 'Upload a happy birthday video', 'Pitch in for a butt massager'
 function getStepContent(step) {
+  // const [songs, setSong] = useState({})
+  // state = {
+  //   song: '',
+  //   artist: ''
+  // }
+
   switch (step) {
     case 0:
       return (
         <div>
-        <h3>Hi this is where you can upload a video to  :3</h3>
-        <form action="/action_page.php">
-        <label for="img">Select image:</label>
-        <input type="file" id="img" name="img" accept="image/*"/>
-        <input type="submit"/>
-      </form>
-      <br></br>
+          <h3>Please upload a video clip (around 30seconds to a minute) saying Happy Birthday or anything to Matt.</h3>
+          <form action="/action_page.php">
+            <label for="img">Select image:</label>
+            <input type="file" id="img" name="img" accept="image/*" />
+            <input type="submit" />
+          </form>
+          <br></br>
         </div>
       )
     case 1:
-        return (
-            <div>
-            <h3>Hi this is where you can upload pictures of you, you and ___, or anything that represents who he is (like sushi and kirby) :3</h3>
-            <form action="/action_page.php">
+      return (
+        <div>
+          <h3>This is where you can upload your favorites moments or memories with Matt or anything that represents who he is (like sushi and Russell).</h3>
+          <form action="/action_page.php">
             <label for="img">Select image:</label>
-            <input type="file" id="img" name="img" accept="image/*"/>
-            <input type="submit"/>
+            <input type="file" id="img" name="img" accept="image/*" />
           </form>
           <br></br>
-            </div>
-          )
+        </div>
+      )
     case 2:
-      return 'Step 3: This is the bit I really care about!';
+      // function myFunction() {
+      //   var oneSong = document.getElementById("song").value;
+      //   var oneArtist = document.getElementById('artist').value;
+      //   console.log(oneSong,oneArtist)
+      //   axios({
+      //     method: 'post',
+      //     url: '/api/song',
+      //     data: {
+      //       song: oneSong,
+      //       artist: oneArtist
+      //     }
+      //   });
+      // }
+      return (
+
+        <div>
+          <h3>Matt loves his spotify playlists! Let's create him a custom playlist :3</h3>
+          <form>
+            <label>Song Name: </label>
+            <input type="text" id="song" name="song" />
+            <br></br>
+            <label>Artist Name: </label>
+            <input type="text" id="artist" name="artist" />
+            <br></br>
+            <button type="button" onClick={async(event) => {
+              var oneSong = document.getElementById("song").value;
+              var oneArtist = document.getElementById('artist').value;
+              console.log(oneSong, oneArtist)
+              var sendData = {
+                song: oneSong,
+                artist: oneArtist
+              };
+              var data = new FormData();
+              data.append("json", JSON.stringify(sendData));
+              // let formData = new FormData();
+              // formData.append('song', oneSong);
+              // formData.append('artist', oneArtist);
+              console.log('data',JSON.stringify(sendData))
+              console.log('data',JSON.parse(JSON.stringify(sendData)))
+
+              fetch('http://localhost:3001/api/song', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sendData)
+              })
+                .then((response) => { console.log(response) 
+                  return response.text()
+                }).then((response)=>{
+                  console.log(response)
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+
+              // return 
+              // console.log(oneSong, oneArtist)
+              // axios.post('localhost:3001/', {
+              //   song: oneSong,
+              //   artist: oneArtist
+              // })
+              // .then((response) => {
+              //   console.log(response)
+              // })
+              // .catch((error) => {
+              //   console.log(error)
+              // })
+              // event.preventDefault();
+            }}
+
+
+            >Submit</button>
+
+
+          </form>
+        </div>
+      );
     default:
       return 'Unknown step';
   }
 }
+
 
 export default function Landing() {
   const classes = useStyles();
@@ -116,8 +208,8 @@ export default function Landing() {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !completed.has(i))
+        // find the first step that has been completed
+        steps.findIndex((step, i) => !completed.has(i))
         : activeStep + 1;
 
     setActiveStep(newActiveStep);

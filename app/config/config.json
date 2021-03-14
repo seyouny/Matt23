@@ -1,0 +1,26 @@
+{
+    "development": {
+      "username": "root",
+      "password": "password",
+      "database": "mattdb",
+      "host": "127.0.0.1",
+      "port": 3306,
+      "dialect": "mysql"
+    },
+    "test": {
+        "username": "root",
+        "password": "password",
+        "database": "mattdb",
+        "host": "127.0.0.1",
+        "port": 3306,
+        "dialect": "mysql"
+    },
+    "production": {
+        "username": "k7f4uhp8uz7mmy1q",
+        "password": "v1w304l12ewd0ckv",
+        "database": "h883o0vd4w92kedg",
+        "host": "k2fqe1if4c7uowsh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        "port": 3306,
+        "dialect": "mysql"
+    }
+}
